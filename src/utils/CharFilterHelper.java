@@ -50,13 +50,27 @@ public class CharFilterHelper {
 		for (int i = 0; i < chartotals.length; i++)
 			System.out.println(String.valueOf(i) + " " + chartotals[i]);
 
+		//calculate total number of letters
+		totalcharcount=0;
+		for(String s:array)
+			totalcharcount+=s.length();
+		
 		return array;
 	}
+	//this provides total number of letters
+	private static Integer totalcharcount = 0;
+	
 
+	public static Integer getCharTotal() {
+		return totalcharcount;
+	}
+	public static Integer[] getCharStats() {
+		return chartotals;
+	}
 	//this provides statistics to the number of times each letter appears. 
 	//statistics of capital and small letters are combined
-	private static Integer[] chartotals = new Integer[255];
-	private static void init() {
+	public static Integer[] chartotals = new Integer[255];
+	public static void init() {
 		for (int i = 0; i < chartotals.length; i++) {
 			chartotals[i] = 0;
 		}
