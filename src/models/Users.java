@@ -79,9 +79,19 @@ public class Users {
 	{
 		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
 		
-		db.execSQL("INSERT INTO "+tablename+" ("+implodeFields(false)+")VALUES (" 
-		+implodeValues(item, false)
-		+");");
+		if(fieldtypes[0].contentEquals("integer"))
+		{
+			db.execSQL("INSERT INTO "+tablename+" ("+implodeFields(false)+")VALUES (" 
+					+implodeValues(item, false)
+					+");");
+		}
+		else
+		if(fieldtypes[0].contains("varchar"))
+		{
+			db.execSQL("INSERT INTO "+tablename+" ("+implodeFields(true)+")VALUES (" 
+					+implodeValues(item, true)
+					+");");
+		}
 	}
 	public static void update(User item)
 	{

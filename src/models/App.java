@@ -6,20 +6,21 @@ import android.database.Cursor;
 
 public class App {
 
-	String name="",componentname="",id="";
+	String name="",componentname="";//,id="";
+	Integer id;
 	public App() {
 	}
 	public App(Cursor c) {
-		id=c.getString(c.getColumnIndex("id"));
+		id=c.getInt(c.getColumnIndex("id"));
 		name = c.getString(c.getColumnIndex("name"));
 		componentname = c.getString(c.getColumnIndex("componentname"));
 	}
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	

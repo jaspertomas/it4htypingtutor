@@ -17,7 +17,7 @@ public class Apps {
 		,"componentname"
 		};
 	public static String[] fieldtypes={
-		"varchar(40)"
+		"integer"
 		,"varchar(100)"
 		,"varchar(500)"
 		};//database types, for use by MyDatabaseHelper
@@ -58,7 +58,7 @@ public class Apps {
 		}
 		return null;
 	}	
-	public static App getById(String id) {
+	public static App getById(Integer id) {
 		// initialize if not yet initialized
 		getItems();
 		return items.get(id);
