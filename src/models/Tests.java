@@ -52,18 +52,18 @@ public class Tests {
 	}
 
 	//-----------getter functions----------
-	public static Test getByName(String name)
-	{
-		//initialize if not yet initialized
-		getItems();
-		
-		for(Test item:items.values())
-		{
-			if(item.getName().contentEquals(name))
-				return item;
-		}
-		return null;
-	}	
+//	public static Test getByName(String name)
+//	{
+//		//initialize if not yet initialized
+//		getItems();
+//		
+//		for(Test item:items.values())
+//		{
+//			if(item.getName().contentEquals(name))
+//				return item;
+//		}
+//		return null;
+//	}	
 	public static Test getById(Integer id) {
 		// initialize if not yet initialized
 		getItems();
