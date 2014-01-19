@@ -1,0 +1,248 @@
+package utils;
+
+import java.util.HashMap;
+
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.os.StatFs;
+import android.widget.Toast;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+public class MyDownloadHelper {
+	
+	private static MyDownloadHelper instance=null;
+	
+	private DownloadManager mgr = null;
+	private long lastDownload = -1L;
+	
+	public DownloadManager getMgr(){return mgr;}
+	public long getLastDownload(){return lastDownload;}
+	public void setLastDownload(long lastDownload){this.lastDownload=lastDownload;}
+
+	//!!!!!THIS IS NOT WISE!!!!!
+//	private Activity activity;
+	
+	public static MyDownloadHelper getInstance(Activity activity)
+	{
+		if(instance==null)instance=new MyDownloadHelper(activity);
+		return instance;
+	}
+	
+	private MyDownloadHelper(Activity activity){
+//		this.activity=activity;
+		mgr = (DownloadManager) activity.getSystemService(Activity.DOWNLOAD_SERVICE);
+//		activity.registerReceiver(onComplete, new IntentFilter(
+//				DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+		activity.registerReceiver(onNotificationClick, new IntentFilter(
+				DownloadManager.ACTION_NOTIFICATION_CLICKED));
+
+		Environment.getExternalStoragePublicDirectory(
+				Environment.DIRECTORY_DOWNLOADS).mkdirs();
+		
+	}
+	
+
+
+
+
+
+	public HashMap<String,String> queryStatus(long download_id) {
+		HashMap<String,String> stringhash=new HashMap<String,String>(); 
+	
+		
+		Cursor c = mgr.query(new DownloadManager.Query()
+		.setFilterById(download_id));
+
+		if (c == null || c.getCount()==0) {
+			stringhash.put("error", "Download not found!");
+			return stringhash;
+		} else {
+			
+			// go to first record in result
+			c.moveToFirst();
+		
+//			Log.e(getClass().getName(),
+//					"COLUMN_ID: "
+//							+ c.getLong(c
+//									.getColumnIndex(DownloadManager.COLUMN_ID)));
+			Long downloadedsofar=c.getLong(c.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+			Long totalsize=c.getLong(c.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+			Long progress=(downloadedsofar*100/totalsize);			
+		
+//			
+//			Log.e(getClass().getName(),
+//					"Free Space in MB: "
+//							+ calcFreeSpaceMB().toString());
+//			
+//			Log.e(getClass().getName(),
+//					"COLUMN_TOTAL_SIZE_BYTES: "
+//							+ totalsize.toString());
+//			Log.e(getClass().getName(),
+//					"COLUMN_BYTES_DOWNLOADED_SO_FAR: "
+//							+ downloadedsofar.toString());
+//			Log.e(getClass().getName(),
+//					"COLUMN_LAST_MODIFIED_TIMESTAMP: "
+//							+ c.getLong(c
+//									.getColumnIndex(DownloadManager.COLUMN_LAST_MODIFIED_TIMESTAMP)));
+//		
+//			Log.e(getClass().getName(),
+//					"COLUMN_LOCAL_URI: "
+//							+ c.getString(c
+//									.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI)));
+
+
+
+			stringhash.put("progress", progress.toString()+"%");
+			stringhash.put("reason", reasonString(c));
+			stringhash.put("status", statusMessage(c));
+			return stringhash;
+
+		
+		}
+	}
+	
+	public long download(String uristring, String filename){
+		Uri uri = Uri.parse(uristring);
+
+		lastDownload=mgr.enqueue(new DownloadManager.Request(uri)
+		.setAllowedNetworkTypes(
+				DownloadManager.Request.NETWORK_WIFI
+				| DownloadManager.Request.NETWORK_MOBILE)
+		.setAllowedOverRoaming(false)
+		.setTitle(filename)
+		//.setDescription("Something useful. No, really.")
+		.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
+				);		
+		return lastDownload;
+	}
+	
+	public void destroy(Activity activity) {
+
+		//unregisterReceiver(onComplete);
+		activity.unregisterReceiver(onNotificationClick);
+	}	
+	
+//	BroadcastReceiver onComplete = new BroadcastReceiver() {
+//		public void onReceive(Context ctxt, Intent intent) {
+//			activity.findViewById(R.id.start).setEnabled(true);
+//		}
+//	};
+
+	BroadcastReceiver onNotificationClick = new BroadcastReceiver() {
+		public void onReceive(Context ctxt, Intent intent) {
+			Toast.makeText(ctxt, "Ummmm...hi!", Toast.LENGTH_LONG).show();
+		}
+	};
+	
+	public final String[] STATUSLIST = { "0", "Pending", "Running", "3", "Paused",
+			"5", "6", "7", "Successful", "9", "10", "11", "12", "13",
+			"14", "15", "Failed" };
+
+	private Integer statusInt(Cursor c) {
+		return c.getInt(c.getColumnIndex(DownloadManager.COLUMN_STATUS));
+	}
+
+	private String statusMessage(Cursor c) {
+		String msg = "???";
+
+		switch (statusInt(c)) {
+		case DownloadManager.STATUS_FAILED:
+			msg = "Download failed!";
+			break;
+
+		case DownloadManager.STATUS_PAUSED:
+			msg = "Download paused!";
+			break;
+
+		case DownloadManager.STATUS_PENDING:
+			msg = "Download pending!";
+			break;
+
+		case DownloadManager.STATUS_RUNNING:
+			msg = "Download in progress!";
+			break;
+
+		case DownloadManager.STATUS_SUCCESSFUL:
+			msg = "Download complete!";
+			break;
+
+		default:
+			msg = "Download is nowhere in sight";
+			break;
+		}
+
+		return (msg);
+	}
+	
+	public final String[] REASONLISTPAUSED = { "0", "Waiting to Retry",
+			"Waiting for Network", "Queued for Wi-Fi", "Unknown", "5",
+			"6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
+			"16" };
+	public final String[] REASONLISTFAILED = { "Unknown", "File Error",
+			"Unhandled HTTP Code", "3", "HTTP Data Error",
+			"Too Many Redirects", "Insufficient Space",
+			"Storage Device Not Found", "Cannot Resume",
+			"File Already Exists", "10", "11", "12", "13", "14", "15",
+			"16" };		
+	private Integer reasonInt(Cursor c) {
+		return c.getInt(c.getColumnIndex(DownloadManager.COLUMN_REASON));
+	}
+	private String reasonString(Cursor c) {
+		String msg = "???";
+//
+//		switch (reasonInt(c)) {
+//		case DownloadManager.STATUS_FAILED:
+//			msg = "Download failed!";
+//			break;
+//
+//		case DownloadManager.STATUS_PAUSED:
+//			msg = "Download paused!";
+//			break;
+//
+//		case DownloadManager.STATUS_PENDING:
+//			msg = "Download pending!";
+//			break;
+//
+//		case DownloadManager.STATUS_RUNNING:
+//			msg = "Download in progress!";
+//			break;
+//
+//		case DownloadManager.STATUS_SUCCESSFUL:
+//			msg = "Download complete!";
+//			break;
+//
+//		default:
+//			msg = "Download is nowhere in sight";
+//			break;
+//		}
+
+		//get reason index
+		Integer statusint=statusInt(c);
+		Integer reasonint=reasonInt(c);
+		//interpret reason index depending on status
+		if (statusint == DownloadManager.STATUS_PAUSED)
+			msg = REASONLISTPAUSED[reasonint];
+		else if (statusint == DownloadManager.STATUS_FAILED)
+			msg = REASONLISTFAILED[reasonint - 1000];			
+		
+		return (msg);
+	}	
+//	private Double calcFreeSpaceMB()
+//	{
+//		//calculate free space
+//		StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
+//		double sdAvailSize = (double)stat.getAvailableBlocks()
+//		                  * (double)stat.getBlockSize();
+//		//free size in megabytes
+//		return sdAvailSize / (1024*1024);			
+//	}
+}
