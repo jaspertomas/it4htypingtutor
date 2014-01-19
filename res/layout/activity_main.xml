@@ -1,23 +1,17 @@
-
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:background="#ffffebee"
-        android:id="@+id/homeroot"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="15dp" >
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#ffffebee"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="15dp" >
     <TextView
-        android:id="@+id/version"
+        android:id="@+id/text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />           
-    <Button
-        android:id="@+id/showTracksButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="showLogin"
-        android:text="Login" 
-        />        
+        />             
+    <ListView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/list_view"></ListView>
     
 </LinearLayout>

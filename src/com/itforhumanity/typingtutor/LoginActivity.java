@@ -1,9 +1,12 @@
 package com.itforhumanity.typingtutor;
 
+import utils.MyApplicationContextHolder;
+import utils.MyDatabaseHelper;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -53,6 +56,9 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		MyApplicationContextHolder.setAppContext(getApplicationContext());
+		MyDatabaseHelper.initialize(MyApplicationContextHolder.getAppContext());
+		
 		setContentView(R.layout.activity_login);
 
 		// Set up the login form.

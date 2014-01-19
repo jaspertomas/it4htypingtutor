@@ -1,10 +1,21 @@
 package com.itforhumanity.typingtutor;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import models.Lessons;
+import utils.MyDatabaseHelper;
 import android.app.Activity;
-import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -12,6 +23,12 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		TextView lblName = (TextView) findViewById(R.id.text_view);
+		lblName.setText("Hello Jasper, your last lesson was \"Home keys\". Choose a lesson.");
+		
+		setupView();
+		
 	}
 
 	@Override
@@ -25,4 +42,52 @@ public class MainActivity extends Activity {
 //        startActivity(intent);
 //	}
 
+	
+
+	private void setupView()
+	{
+		
+		List<String> listitems;
+        ListView listView = (ListView) findViewById (R.id.list_view);
+        
+		SQLiteDatabase db=MyDatabaseHelper.getInstance().getWritableDatabase();
+        
+
+		//=====read doctors table and add results to listview=======
+		listitems= new ArrayList<String>(Lessons.list.length);
+
+        for(String[] lesson:Lessons.list)
+        {
+        	
+        	listitems.add(lesson[0]);
+       	}
+
+        if (listView != null) {
+            listView.setAdapter(new ArrayAdapter<String>(MainActivity.this,
+              android.R.layout.simple_list_item_1, listitems));
+
+
+            listView.setOnItemClickListener(new OnItemClickListener() {
+    			public void onItemClick(AdapterView<?> parent, View view,int position, long id) 
+    			    {
+    			      String selectedFromList = (parent.getItemAtPosition(position).toString());
+    					Toast.makeText(MainActivity.this, selectedFromList, Toast.LENGTH_LONG).show();
+
+    			    }});	
+        
+        }	   
+	}
+
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		// Handle item selection
+//		switch (item.getItemId()) {
+//		case R.id.menu_cancel:
+//			finish();
+//			return true;
+//		default:
+//			return super.onOptionsItemSelected(item);
+//		}
+//	}
+	
 }
