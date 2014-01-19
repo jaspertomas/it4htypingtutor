@@ -73,7 +73,8 @@ public class User {
 	}
 	public void save()
 	{
-		if(Users.getByUsername(username)==null)
+//		if(Users.getByUsername(username)==null)
+		if(Users.getById(id)==null)
 			Users.insert(this);
 		else
 			Users.update(this);

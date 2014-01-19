@@ -58,7 +58,7 @@ public class Users {
 		}
 		return null;
 	}	
-	public static User getById(String id) {
+	public static User getById(Integer id) {
 		// initialize if not yet initialized
 		getItems();
 		return items.get(id);
