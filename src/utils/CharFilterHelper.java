@@ -6,7 +6,7 @@ public class CharFilterHelper {
 	// public static void main(String args[])
 	// {
 	// String[] input=Texts.list[0];
-	// String filter="asdfASDF";
+	// String filter="asdf";
 	// for(String s:filter(input,filter,30))
 	// System.out.println(s);
 	// }
@@ -14,6 +14,10 @@ public class CharFilterHelper {
 	public static ArrayList<String> filter(String[] input, String filter,
 			Integer maxlinelength) {
 		init();
+		
+		//include both uppercase and lowercase letters in filter
+		//example: asdF becomes asdfASDF
+		filter=filter.toLowerCase()+filter.toUpperCase();
 
 		ArrayList<String> array = new ArrayList<String>();
 		String charstring;
