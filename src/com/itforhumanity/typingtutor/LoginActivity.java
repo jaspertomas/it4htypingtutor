@@ -232,6 +232,7 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 
 			if (success) {
+				mPasswordView.setText("");
 				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 		        startActivity(intent);
 			} else {
