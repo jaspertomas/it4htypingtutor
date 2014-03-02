@@ -5,14 +5,18 @@ import java.util.ArrayList;
 import models.Texts;
 import utils.CharFilterHelper;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 public class TutorialActivity extends Activity {
 
 	static TutorialActivity instance;
@@ -34,9 +38,11 @@ public class TutorialActivity extends Activity {
 	private EditText input;
 	TextView[] youtypeds;
 	TextView[] typemes;
+	BlinkerRunnable blinker;
+	final Integer rowcount=4; 
+	Boolean success=false;
 	private void setupView(){
 		
-		final Integer rowcount=4; 
 		youtyped1 = (TextView) findViewById(R.id.youtyped1);
 		typeme1 = (TextView) findViewById(R.id.typeme1);
 		youtyped2 = (TextView) findViewById(R.id.youtyped2);
@@ -70,8 +76,8 @@ public class TutorialActivity extends Activity {
 		typeme3.setText(texttotype.get(2).trim());
 		typeme4.setText(texttotype.get(3).trim());
 		
-		BlinkerRunnable thread=new BlinkerRunnable(this);
-		Thread t=new Thread(thread);
+		blinker=new BlinkerRunnable(this);
+		Thread t=new Thread(blinker);
 		t.start();
 		
 	}
@@ -119,6 +125,7 @@ public class TutorialActivity extends Activity {
 
 	Integer row=0, column=0;
 	public void processInput(CharSequence s) {
+		if(success)return;
 		CharSequence c=typemes[row].getText().subSequence(column, column+1);
 //		Toast.makeText(TutorialActivity.getInstance(), c, Toast.LENGTH_SHORT).show();
 		
@@ -129,8 +136,26 @@ public class TutorialActivity extends Activity {
 		column++;
 		if(youtypeds[row].getText().length()==typemes[row].getText().length())
 		{
-			column=0;
-			row++;
+			if(row==rowcount-1)
+			{
+				blinker.close();
+//				Toast.makeText(TutorialActivity.this, "SUCCESS!", Toast.LENGTH_LONG);
+				success=true;
+				runOnUiThread(new Runnable() {
+			        public void run()
+			        {
+			        	showAlertDialogUsingBuilder(  TutorialActivity.this, 
+			        			"Typing Tutor", 
+			        			"SUCCESS!!!", 
+			        			"OK");
+			        }
+			    });
+			}
+			else
+			{
+				column=0;
+				row++;
+			}
 		}
 	}
 	Boolean blinked=false;//if blinked is true, underscore is present
@@ -148,18 +173,52 @@ public class TutorialActivity extends Activity {
 			blinked=false;
 		}
 	}
+
+	public void showAlertDialogUsingBuilder(Context context, String title, String message, String posButtonMsg) {
+		
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+		alertDialogBuilder.setTitle(title);
+		alertDialogBuilder
+		.setMessage(message).setPositiveButton(posButtonMsg,new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog,int id) {
+				// if this button is clicked, close
+				// current activity
+				Log.d("JPC","OK Buton inside alert Clicked");
+			}
+		  });
+		AlertDialog alertDialog = alertDialogBuilder.create();
+		alertDialog.show();
+    }
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	        case R.id.back:
+	        	finish();
+	            return true;
+	        default:
+	            return false;
+	    }
+	}		
 }
 class BlinkerRunnable implements Runnable
 {
+	Boolean running=false;
 	TutorialActivity context;
 	public BlinkerRunnable(TutorialActivity context)
 	{
 		this.context=context;
 	}
+	public void close()
+	{
+		running=false;
+	}
     public void run()
     {
+    	running=true;
     	Looper.prepare();
-    	while(true)
+    	while(running)
     	{
 			context.runOnUiThread(new Runnable() {
 		        public void run()

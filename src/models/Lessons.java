@@ -10,7 +10,14 @@ public class Lessons {
 			{"ASDF","asdf",},
 			{"JKL;","jkl;",},
 			{"Home keys","asdfjkl;",},
-			{"G & H","asdfjkl;gh",},
+			{"QWER","asdfqwer",},
+			{"UIOP","jkl;uiop",},
+			{"ZXCV","asdfzxcv",},
+			{"NM,.","jkl;nm,.",},
+			{"Entire Middle Row","asdfjkl;gh",},
+			{"Entire Top Row","qwertyuiop",},
+			{"Entire Bottom Row","zxcvbnm,./",},
+			{"Entire Alphabet","asdfjkl;ghqwertyuiopzxcvbnm,./",},
 		};
 	public static void main(String args[])
 	{
