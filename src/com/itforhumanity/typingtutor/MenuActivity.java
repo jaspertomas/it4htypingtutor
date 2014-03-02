@@ -6,6 +6,7 @@ import java.util.List;
 import models.Lessons;
 import utils.MyDatabaseHelper;
 import android.app.Activity;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,15 +18,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MenuActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_menu);
 		
 		TextView lblName = (TextView) findViewById(R.id.text_view);
-		lblName.setText("Hello Jasper, your last lesson was \"Home keys\". Choose a lesson.");
+		lblName.setText("Choose a lesson.");
 		
 		setupView();
 		
@@ -63,7 +64,7 @@ public class MainActivity extends Activity {
        	}
 
         if (listView != null) {
-            listView.setAdapter(new ArrayAdapter<String>(MainActivity.this,
+            listView.setAdapter(new ArrayAdapter<String>(MenuActivity.this,
               android.R.layout.simple_list_item_1, listitems));
 
 
@@ -71,7 +72,11 @@ public class MainActivity extends Activity {
     			public void onItemClick(AdapterView<?> parent, View view,int position, long id) 
     			    {
     			      String selectedFromList = (parent.getItemAtPosition(position).toString());
-    					Toast.makeText(MainActivity.this, selectedFromList, Toast.LENGTH_LONG).show();
+    					//Toast.makeText(MenuActivity.this, selectedFromList, Toast.LENGTH_LONG).show();
+    					Intent intent = new Intent(getApplicationContext(), TutorialActivity.class);
+    			        intent.setAction(selectedFromList);
+    					startActivity(intent);
+    			      
 
     			    }});	
         

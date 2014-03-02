@@ -56,41 +56,46 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		//initialize resources
 		MyApplicationContextHolder.setAppContext(getApplicationContext());
 		MyDatabaseHelper.initialize(MyApplicationContextHolder.getAppContext());
+	
+		Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+        startActivity(intent);
 		
-		setContentView(R.layout.activity_login);
+		
+//		setContentView(R.layout.activity_login);
 
 		// Set up the login form.
-		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
-		mEmailView = (EditText) findViewById(R.id.email);
-		mEmailView.setText(mEmail);
-
-		mPasswordView = (EditText) findViewById(R.id.password);
-		mPasswordView
-				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-					@Override
-					public boolean onEditorAction(TextView textView, int id,
-							KeyEvent keyEvent) {
-						if (id == R.id.login || id == EditorInfo.IME_NULL) {
-							attemptLogin();
-							return true;
-						}
-						return false;
-					}
-				});
-
-		mLoginFormView = findViewById(R.id.login_form);
-		mLoginStatusView = findViewById(R.id.login_status);
-		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
-
-		findViewById(R.id.sign_in_button).setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						attemptLogin();
-					}
-				});
+//		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
+//		mEmailView = (EditText) findViewById(R.id.email);
+//		mEmailView.setText(mEmail);
+//
+//		mPasswordView = (EditText) findViewById(R.id.password);
+//		mPasswordView
+//				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//					@Override
+//					public boolean onEditorAction(TextView textView, int id,
+//							KeyEvent keyEvent) {
+//						if (id == R.id.login || id == EditorInfo.IME_NULL) {
+//							attemptLogin();
+//							return true;
+//						}
+//						return false;
+//					}
+//				});
+//
+//		mLoginFormView = findViewById(R.id.login_form);
+//		mLoginStatusView = findViewById(R.id.login_status);
+//		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
+//
+//		findViewById(R.id.sign_in_button).setOnClickListener(
+//				new View.OnClickListener() {
+//					@Override
+//					public void onClick(View view) {
+//						attemptLogin();
+//					}
+//				});
 	}
 
 	@Override
@@ -233,7 +238,7 @@ public class LoginActivity extends Activity {
 
 			if (success) {
 				mPasswordView.setText("");
-				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+				Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
 		        startActivity(intent);
 			} else {
 				mPasswordView

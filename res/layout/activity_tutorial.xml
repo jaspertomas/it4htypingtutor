@@ -1,0 +1,63 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#ffffebee"
+    android:id="@+id/rootlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--  -->
+    <TextView
+        android:id="@+id/typeme1"
+        android:layout_width="fill_parent"
+        android:layout_height="18dip"
+        
+        />
+    <TextView
+        android:id="@+id/youtyped1"
+        android:layout_width="fill_parent"
+        android:layout_height="18dip"
+        
+        />
+    <TextView
+        android:id="@+id/typeme2"
+        android:layout_width="fill_parent"
+        android:layout_height="18dip"
+        
+        />
+    <TextView
+        android:id="@+id/youtyped2"
+        android:layout_width="fill_parent"
+        android:layout_height="18dip"
+        
+        />
+    <TextView
+        android:id="@+id/typeme3"
+        android:layout_width="fill_parent"
+        android:layout_height="18dip"
+        
+        />
+    <TextView
+        android:id="@+id/youtyped3"
+        android:layout_width="fill_parent"
+        android:layout_height="18dip"
+        
+        />
+    <TextView
+        android:id="@+id/typeme4"
+        android:layout_width="fill_parent"
+        android:layout_height="18dip"
+        
+        />
+    <TextView
+        android:id="@+id/youtyped4"
+        android:layout_width="fill_parent"
+        android:layout_height="18dip"
+        
+        />
+    <EditText
+        android:id="@+id/input"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+    
+</LinearLayout>

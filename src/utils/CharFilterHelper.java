@@ -51,8 +51,8 @@ public class CharFilterHelper {
 		}
 		array.add(filteredstring);
 
-		for (int i = 0; i < chartotals.length; i++)
-			System.out.println(String.valueOf(i) + " " + chartotals[i]);
+//		for (int i = 0; i < chartotals.length; i++)
+//			System.out.println(String.valueOf(i) + " " + chartotals[i]);
 
 		//calculate total number of letters
 		totalcharcount=0;
