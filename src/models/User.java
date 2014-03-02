@@ -2,9 +2,6 @@ package models;
 
 import java.util.ArrayList;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import android.database.Cursor;
 
 public class User {
