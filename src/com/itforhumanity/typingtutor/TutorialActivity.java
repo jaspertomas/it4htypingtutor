@@ -2,6 +2,7 @@ package com.itforhumanity.typingtutor;
 
 import java.util.ArrayList;
 
+import models.Lessons;
 import models.Texts;
 import utils.CharFilterHelper;
 import android.app.Activity;
@@ -41,6 +42,7 @@ public class TutorialActivity extends Activity {
 	BlinkerRunnable blinker;
 	final Integer rowcount=4; 
 	Boolean success=false;
+	ArrayList<String> texttotype;
 	private void setupView(){
 		
 		youtyped1 = (TextView) findViewById(R.id.youtyped1);
@@ -68,13 +70,19 @@ public class TutorialActivity extends Activity {
 		Double d=Math.random()*Texts.list.length;
 		Integer textid=d.intValue();
 		String text[]=Texts.list[textid];
-	    String filter=getIntent().getAction();
-		ArrayList<String> texttotype=CharFilterHelper.filter(text,filter,30);
-		
-		typeme1.setText(texttotype.get(0).trim());
-		typeme2.setText(texttotype.get(1).trim());
-		typeme3.setText(texttotype.get(2).trim());
-		typeme4.setText(texttotype.get(3).trim());
+	    String filter=Lessons.getMap().get(getIntent().getAction());
+		texttotype=CharFilterHelper.filter(text,filter,60);
+
+		try{
+			typeme1.setText(texttotype.get(0).trim());
+			typeme2.setText(texttotype.get(1).trim());
+			typeme3.setText(texttotype.get(2).trim());
+			typeme4.setText(texttotype.get(3).trim());
+		}catch(IndexOutOfBoundsException e)
+		{
+			//too few letters; do nothing
+			Log.i("","too few letters");
+		}
 		
 		blinker=new BlinkerRunnable(this);
 		Thread t=new Thread(blinker);
@@ -136,7 +144,7 @@ public class TutorialActivity extends Activity {
 		column++;
 		if(youtypeds[row].getText().length()==typemes[row].getText().length())
 		{
-			if(row==rowcount-1)
+			if(row==texttotype.size()-1)
 			{
 				blinker.close();
 //				Toast.makeText(TutorialActivity.this, "SUCCESS!", Toast.LENGTH_LONG);

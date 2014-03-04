@@ -26,6 +26,8 @@ public class CharFilterHelper {
 										// space
 
 		for (String s : input) {
+			//terminate with space - add a space between lines
+			s+=" ";
 			for (Character c : s.toCharArray()) {
 				charstring = c.toString();
 				if (filter.contains(charstring)) {
@@ -33,7 +35,10 @@ public class CharFilterHelper {
 					filteredstring += charstring;
 					if (Character.getNumericValue(c.charValue()) >= 0)
 						chartotals[Character.getNumericValue(c.charValue())]++;
-				} else if (c == ' ') {
+				} 
+				//prevent doublespace;
+				//break lines on spaces, when line meets or exceeds maxlinelength
+				else if (c == ' ') {
 					if (lastwasspace) {
 						// ignore
 					} else {
