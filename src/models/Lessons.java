@@ -12,14 +12,14 @@ public class Lessons {
 			{"ASDF","asdf",},
 			{"JKL;","jkl;:'\"",},
 			{"Home keys","asdfjkl;:'\"",},
+			{"Home Row","asdfjkl;:'\"gh",},
 			{"QWER","asdfqwer",},
 			{"UIOP","jkl;:'\"uiop",},
+			{"Top Row","asdfjkl;:'\"ghqwertyuiop",},
 			{"ZXCV","asdfzxcv",},
-			{"NM,.","jkl;:'\"nm,.",},
-			{"Entire Middle Row","asdfjkl;:'\"gh",},
-			{"Entire Top Row","qwertyuiop",},
-			{"Entire Bottom Row","zxcvbnm,./",},
-			{"Entire Alphabet","asdfjkl;:'\"ghqwertyuiopzxcvbnm,./",},
+			{"NM,.","jkl;:'\"nm,.<>?/",},
+			{"Bottom Row","asdfjkl;:'\"ghzxcvbnm,./<>/?",},
+			{"Entire Alphabet","asdfjkl;:'\"ghqwertyuiopzxcvbnm,./<>/?",},
 		};
 	private static HashMap<String,String> map=new HashMap<String,String>();
 	public static HashMap<String,String> getMap()
