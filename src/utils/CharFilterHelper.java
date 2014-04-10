@@ -2,6 +2,8 @@ package utils;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 public class CharFilterHelper {
 	// public static void main(String args[])
 	// {
@@ -24,26 +26,37 @@ public class CharFilterHelper {
 		String filteredstring = "";
 		boolean lastwasspace = true; // ensure that text does not begin with a
 										// space
+		Integer counter=0;
 
 		for (String s : input) {
 			//terminate with space - add a space between lines
 			s+=" ";
 			for (Character c : s.toCharArray()) {
 				charstring = c.toString();
-				if (filter.contains(charstring)) {
-					lastwasspace = false;
-					filteredstring += charstring;
-					if (Character.getNumericValue(c.charValue()) >= 0)
-						chartotals[Character.getNumericValue(c.charValue())]++;
-				} 
 				//prevent doublespace;
 				//break lines on spaces, when line meets or exceeds maxlinelength
-				else if (c == ' ') {
+				if (c == ' ') {
 					if (lastwasspace) {
-						// ignore
+						// ignore double spaces
 					} else {
 						lastwasspace = true;
-						filteredstring += " ";
+						if(filter.contains(charstring))	
+						{
+							filteredstring += " ";
+						}					
+						//if filter doesn't contain " ", 
+						//we'll add one anyway every few words 
+						else 
+						{
+							counter++;
+							Log.e("",counter.toString());
+							if(counter==4)
+							{
+								counter=0;
+								filteredstring += " ";
+								Log.e("","space");
+							}
+						}
 						// add and reset only if adding the next string will
 						// exceed length limit
 						if (filteredstring.length() >= maxlinelength) {
@@ -52,6 +65,13 @@ public class CharFilterHelper {
 						}
 					}
 				}
+				else 
+				if (filter.contains(charstring)) {
+					lastwasspace = false;
+					filteredstring += charstring;
+					if (Character.getNumericValue(c.charValue()) >= 0)
+						chartotals[Character.getNumericValue(c.charValue())]++;
+				} 				
 			}
 		}
 		array.add(filteredstring);

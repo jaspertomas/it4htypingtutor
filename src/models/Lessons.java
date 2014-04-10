@@ -19,7 +19,7 @@ public class Lessons {
 			{"ZXCV","asdfzxcv",},
 			{"NM,.","jkl;:'\"nm,.<>?/",},
 			{"Bottom Row","asdfjkl;:'\"ghzxcvbnm,./<>/?",},
-			{"Entire Alphabet","asdfjkl;:'\"ghqwertyuiopzxcvbnm,./<>/?",},
+			{"Entire Alphabet"," asdfjkl;:'\"ghqwertyuiopzxcvbnm,./<>/?",},
 		};
 	private static HashMap<String,String> map=new HashMap<String,String>();
 	public static HashMap<String,String> getMap()
