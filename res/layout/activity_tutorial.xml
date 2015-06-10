@@ -63,6 +63,7 @@
         android:textSize="24dip"
         />
     <EditText
+        android:inputType="textNoSuggestions"
         android:id="@+id/input"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>

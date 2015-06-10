@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Lessons;
+import utils.MyApplicationContextHolder;
 import utils.MyDatabaseHelper;
 import android.app.Activity;
 import android.content.Intent;
@@ -27,6 +28,10 @@ public class MenuActivity extends Activity {
 		TextView lblName = (TextView) findViewById(R.id.text_view);
 		lblName.setText("Choose a lesson.");
 		
+		//initialize resources
+		MyApplicationContextHolder.setAppContext(getApplicationContext());
+		MyDatabaseHelper.initialize(MyApplicationContextHolder.getAppContext());
+	
 		setupView();
 		
 	}

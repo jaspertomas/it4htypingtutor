@@ -72,6 +72,8 @@ public class TutorialActivity extends Activity {
 		String text[]=Texts.list[textid];
 	    String filter=Lessons.getMap().get(getIntent().getAction());
 		texttotype=CharFilterHelper.filter(text,filter,60);
+		
+		input.requestFocus();
 
 		try{
 			typeme1.setText(texttotype.get(0).trim());
